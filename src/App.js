@@ -79,19 +79,20 @@ function NavigationBar({children}){
   )
 }
 
-function Main({music}){
+function Main({children}){
   // const [query, setQuery] = useState("");
   
  return(
   <div className="container">
   {/* <MusicListBox music={music}/>
   <PlaylistBox /> */}
-  <Box title = {"Music List"}>
+  {/* <Box title = {"Music List"}>
     <Music music={music} />
   </Box>
   <Box title = {"Playlist"}>
     <Playlist music={music}/>
-  </Box>
+  </Box> */}
+  {children}
 </div>
   )
 }
