@@ -206,7 +206,15 @@ function App() {
       <NavigationBar>
         <NumResult music={music} />
       </NavigationBar>
-      <Main music={music}/>
+      <Main>
+        <Box title="Music List">
+          <Music music={music} />
+        </Box>
+        <Box title="Playlist">
+          <Playlist />
+        </Box>
+      </Main>
+      {/* <Main music={music}/> */}
 {/* 
   
       {/* <nav>
