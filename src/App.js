@@ -64,16 +64,152 @@ const tempPlaylist = [
   },
 ];
 
-function App() {
-  const [query, setQuery] = useState("");
-  const [musics, setMusic] = useState(tempMusicData);
+function NavigationBar({children}){
+  return(
+    <nav className="container">
+    {/* <Logo />
+    <Search />
+    <NumResult music={music}/> */}
+
+    <Logo />
+    <Search />
+    {children}
+    </nav>
+    
+  )
+}
+
+function Main({music}){
+  // const [query, setQuery] = useState("");
+  
+ return(
+  <div className="container">
+  {/* <MusicListBox music={music}/>
+  <PlaylistBox /> */}
+  <Box title = {"Music List"}>
+    <Music music={music} />
+  </Box>
+  <Box title = {"Playlist"}>
+    <Playlist music={music}/>
+  </Box>
+</div>
+  )
+}
+
+//Main Components
+// function MusicListBox ({music}){
+//   return( 
+//   <div className="container">
+//   <h2>Music List</h2>
+//   <Music music={music}/>
+// </div>
+//   )
+// }
+
+function Music({music}){
+  
+
+return(
+<ul>
+    {music.map((music) => (
+      <li key={music.id}>
+        {music.title} by {music.artist} ({music.genre})
+        <button>♥️</button>
+      </li>
+    ))}
+  </ul>
+  )
+}
+
+// function PlaylistBox(){
+
+
+//     return(
+//       <div className="container">
+//       <h2>Playlist</h2>
+//       <Playlist />
+//       </div>
+//     )
+// }
+
+function Playlist(){
   const [playlist, setPlaylist] = useState(tempPlaylist);
   const addToPlaylist = (music) => {
     setPlaylist([...playlist, music]);
   };
+
+  return(
+   
+  <ul>
+    {playlist.map((music) => (
+      <li key={music.id}>
+        {music.title} by {music.artist}
+      </li>
+    ))}
+  </ul>
+  )
+}
+
+//NavBar Components
+function Search(){
+  const [query, setQuery] = useState("");
+  return(
+    <input className="search"
+      type="text"
+      placeholder="Search music..."
+      value={query}
+      onChange={(e)=> setQuery(e.target.value)} />
+  )
+}
+
+function Logo(){
+  return <h1 style={{textAlign:"center"}}>Music App</h1>
+}
+
+function NumResult({music}){
+  return <p>
+  Found <strong>{music.length}</strong> results
+</p>
+}
+
+function Box({children}){
+  return<div className="container">
+  <h2>Music List</h2>
+  {children}
+</div>
+}
+
+//not reuseable
+// function Modal({children}){
+// return <div>Message: {children}</div>;
+// }
+
+// function Success(){
+//   return(
+//   <p>Congratumalations</p>
+//   )
+// }
+
+// function Error(){
+//   return <p>Sorry</p>
+// }
+
+
+function App() {
+  const [music, setMusic] = useState(tempMusicData);
+
   return (
     <div>
-      <nav>
+    {/* <Modal>
+      <Success />
+    </Modal> */}
+      <NavigationBar>
+        <NumResult music={music} />
+      </NavigationBar>
+      <Main music={music}/>
+{/* 
+  
+      {/* <nav>
         <h1 style={{ textAlign: "center" }}>Music App</h1>
         <input
           className="search"
@@ -85,36 +221,18 @@ function App() {
         <p>
         Found <strong>X</strong> results
       </p>
-      </nav>
-      <div className="container">
-        <div className="container">
-          <h2>Music List</h2>
-
-          <ul>
-            {musics.map((music) => (
-              <li key={music.id}>
-                {music.title} by {music.artist} ({music.genre})
-                <button>♥️</button>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="container">
-          <h2>Playlist</h2>
-          <ul>
-            {playlist.map((music) => (
-              <li key={music.id}>
-                {music.title} by {music.artist}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+      </nav> */}
+     
     </div>
   );
 }
 
 export default App;
+//stateful components
+//stateless components
+//structured components
+
+
 //conditional Statements
 // export default function App(){
   // let content;
