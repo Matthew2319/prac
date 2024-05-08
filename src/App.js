@@ -7,7 +7,7 @@ import './App.css';
 // import Card from './Card.js'
 // import Loginform from './Loginform.js'
 // import Admin from './Admin.js'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // function App() {
 //   return (
@@ -23,46 +23,50 @@ import { useState } from "react";
 //   );
 // }
 
-const tempMusicData = [
-  {
-    id: 1,
-    title: "Song 1",
-    artist: "Artist A",
-    genre: "Pop",
-  },
-  {
-    id: 2,
-    title: "Song 2",
-    artist: "Artist B",
-    genre: "Rock",
-  },
-  {
-    id: 3,
-    title: "Song 3",
-    artist: "Artist C",
-    genre: "Jazz",
-  },
-];
-const tempPlaylist = [
-  {
-    id: 1,
-    title: "Song 1",
-    artist: "Artist A",
-    genre: "Pop",
-  },
-  {
-    id: 2,
-    title: "Song 2",
-    artist: "Artist B",
-    genre: "Rock",
-  },
-  {
-    id: 3,
-    title: "Song 3",
-    artist: "Artist C",
-    genre: "Jazz",
-  },
-];
+// const tempMusicData = [
+//   {
+//     id: 1,
+//     title: "Song 1",
+//     artist: "Artist A",
+//     genre: "Pop",
+//   },
+//   {
+//     id: 2,
+//     title: "Song 2",
+//     artist: "Artist B",
+//     genre: "Rock",
+//   },
+//   {
+//     id: 3,
+//     title: "Song 3",
+//     artist: "Artist C",
+//     genre: "Jazz",
+//   },
+// ];
+// const tempPlaylist = [
+//   {
+//     id: 1,
+//     title: "Song 1",
+//     artist: "Artist A",
+//     genre: "Pop",
+//   },
+//   {
+//     id: 2,
+//     title: "Song 2",
+//     artist: "Artist B",
+//     genre: "Rock",
+//   },
+//   {
+//     id: 3,
+//     title: "Song 3",
+//     artist: "Artist C",
+//     genre: "Jazz",
+//   },
+// ];
+
+const CLIENT_ID = "3951b4e181504bbfbef624c13478456c";
+
+const CLIENT_SECRET = "9b038f6447644b8fa29d3bb746e0d68c";
 
 function NavigationBar({children}){
   return(
@@ -72,7 +76,6 @@ function NavigationBar({children}){
     <NumResult music={music}/> */}
 
     <Logo />
-    <Search />
     {children}
     </nav>
     
@@ -114,7 +117,7 @@ return(
 <ul>
     {music.map((music) => (
       <li key={music.id}>
-        {music.title} by {music.artist} ({music.genre})
+        {music.name} by {music.artist[0].name} ({music.genre})
         <button>♥️</button>
       </li>
     ))}
@@ -134,7 +137,7 @@ return(
 // }
 
 function Playlist(){
-  const [playlist, setPlaylist] = useState(tempPlaylist);
+  const [playlist, setPlaylist] = useState([]);
   const addToPlaylist = (music) => {
     setPlaylist([...playlist, music]);
   };
@@ -152,16 +155,51 @@ function Playlist(){
 }
 
 //NavBar Components
-function Search(){
+function Search({setMusic, music }) {
   const [query, setQuery] = useState("");
+  const [accessToken, setAccessToken] = useState("");
+
+  useEffect(() => {
+    var authParameter = {
+      method: "POST",
+      headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+},
+      body:
+            "grant_type=client_credentials&clientid" + CLIENT_ID +"&client_secret=" + CLIENT_SECRET,  };
+
+  fetch("https://accounts.spotify.com/api/token", authParameter).then((result) => result.json().then((data) => setAccessToken(data.access_token))
+);
+  }, [])
+
+async function search(){
+  var trackParameters = {
+    method: "GET",
+    headers:{
+      "Content-Type" : "application/json", Authorization: "Bearer "+ accessToken,
+    },
+  };
+
+  var tracks = await fetch("https://api.spotify.com/v1/search?q="+ query +"&type=track&limit=50",trackParameters).then((result) => result.json().then((data) => setMusic(data.tracks.items)));
+}
+ console.log(music);
+
+
   return(
     <input className="search"
       type="text"
       placeholder="Search music..."
+      onKeyDown={(e) =>{
+        if(e.key === "Enter"){
+          search();
+        }
+      }}
       value={query}
       onChange={(e)=> setQuery(e.target.value)} />
   )
 }
+
+
 
 function Logo(){
   return <h1 style={{textAlign:"center"}}>Music App</h1>
@@ -173,9 +211,9 @@ function NumResult({music}){
 </p>
 }
 
-function Box({children}){
+function Box({children, title}){
   return<div className="container">
-  <h2>Music List</h2>
+  <h2>{title}</h2>
   {children}
 </div>
 }
@@ -197,7 +235,7 @@ function Box({children}){
 
 
 function App() {
-  const [music, setMusic] = useState(tempMusicData);
+  const [music, setMusic] = useState([]);
 
   return (
     <div>
@@ -206,6 +244,7 @@ function App() {
     </Modal> */}
       <NavigationBar>
         <NumResult music={music} />
+        <Search setMusic={setMusic} music={music}/>
       </NavigationBar>
       <Main>
         <Box title="Music List">
