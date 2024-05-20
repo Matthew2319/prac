@@ -28,7 +28,7 @@ function App() {
   };
 
   return (
-    <div className="app-container">
+    <div className="container">
       <NavigationBar>
         <Search setMusic={setMusic} />
         <NumberResult music={music} />
@@ -54,20 +54,20 @@ function App() {
 
 function NavigationBar({ children }) {
   return (
-    <nav className="navbar">
+    <nav className="navie">
       <Logo />
-      <div className="navbar-children">{children}</div>
+      <div className="navie-children">{children}</div>
     </nav>
   );
 }
 
 function Logo() {
-  return <h1 className="logo">Clover Beats</h1>;
+  return <h1 className="logo">Crimson Beats</h1>;
 }
 
 function NumberResult({ music }) {
   return (
-    <p className="number-result">
+    <p className="num-res">
       Found <strong>{music.length}</strong> results
     </p>
   );
@@ -118,7 +118,7 @@ function Search({ setMusic }) {
 
   return (
     <input
-      className="search"
+      className="sear"
       type="text"
       placeholder="Search songs..."
       onKeyDown={(e) => {
@@ -134,7 +134,7 @@ function Search({ setMusic }) {
 
 function FilterButton({ toggleFilter, isFiltered }) {
   return (
-    <button className="filter-button" onClick={toggleFilter}>
+    <button className="fil-butt" onClick={toggleFilter}>
       {isFiltered ? "Show Default Order" : "Sort A-Z"}
     </button>
   );
@@ -142,23 +142,23 @@ function FilterButton({ toggleFilter, isFiltered }) {
 
 function Music({ music, addToPlaylist }) {
   return (
-    <ul className="music-list">
+    <ul className="mus-li">
       {music.map((track, index) => (
-        <li key={index} className="music-item">
+        <li key={index} className="mus-item">
           <img
             src={track.album.images[0].url}
             alt={track.name}
-            className="album-image"
+            className="alb-img"
           />
-          <div className="song-details">
-            <span className="song-name">{track.name}</span>
-            <span className="artist-name">
+          <div className="sng-det">
+            <span className="sng-nm">{track.name}</span>
+            <span className="artist-nm">
               {track.artists && track.artists.length > 0
                 ? track.artists[0].name
                 : "Unknown Artist"}
             </span>
           </div>
-          <button className="add-button" onClick={() => addToPlaylist(track)}>
+          <button className="ad-butt" onClick={() => addToPlaylist(track)}>
             🎶
           </button>
         </li>
@@ -180,11 +180,11 @@ function PlayList({ playlist, removeFromPlaylist }) {
   return (
     <ul className="playlist">
       {playlist.map((music, index) => (
-        <li key={index} className="playlist-item">
+        <li key={index} className="playlist-itm">
           <img
             src={music.album.images[0].url}
             alt={music.name}
-            className="playlist-item-image"
+            className="playlist-item-img"
           />
           <div className="playlist-item-info">
             <span className="playlist-item-name">{music.name}</span>
@@ -195,7 +195,7 @@ function PlayList({ playlist, removeFromPlaylist }) {
             </span>
           </div>
           <button
-            className="remove-button playlist-item-button"
+            className="rmv-btn-plyli-item-btn"
             onClick={() => removeFromPlaylist(index)}
           >
             Remove
