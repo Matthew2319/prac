@@ -1,8 +1,8 @@
 import './App.css';
 import { useEffect, useState } from "react";
 
-const CLIENT_ID = "0facda4bab1a4a9aac013dc641b1f3d9";
-const CLIENT_SECRET = "907cd38041234de39202346c92626241";
+const CLIENT_ID = "3951b4e181504bbfbef624c13478456c";
+const CLIENT_SECRET = "9b038f6447644b8fa29d3bb746e0d68c";
 
 function App() {
   const [music, setMusic] = useState([]);
@@ -62,7 +62,7 @@ function NavigationBar({ children }) {
 }
 
 function Logo() {
-  return <h1 className="logo">Music App</h1>;
+  return <h1 className="logo">Clover Beats</h1>;
 }
 
 function NumberResult({ music }) {
